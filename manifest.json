@@ -1,0 +1,6 @@
+{
+  "name": "bilibili-video-sync",
+  "version": "0.1.0",
+  "description": "A chrome extension for bilibili video syncing between friends",
+  "manifest_version": 2
+}
