@@ -11,5 +11,11 @@
   "options_page": "options.html",
   "page_action": {
     "default_popup": "popup.html"
-  }
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://*.bilibili.com/*"],
+      "js": ["addListener.js"]
+    }
+  ]
 }

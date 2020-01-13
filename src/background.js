@@ -1,7 +1,7 @@
 chrome.runtime.onInstalled.addListener(function() {
   chrome.storage.sync.set({
-    wsServer: 'wss://localhost:6020',
-    idServer: 'http://localhost:6021'
+    wsServer: 'localhost:6020',
+    idServer: 'localhost:6021'
   }, function() {
     console.log('websocket server has set to localhost:6020');
   });

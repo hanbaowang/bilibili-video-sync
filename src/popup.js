@@ -1,4 +1,4 @@
-const input = document.getElementById('random')
+const input = document.getElementById('ramdon')
 const generate = document.getElementById('generate')
 const matching = document.getElementById('matching')
 
@@ -9,14 +9,14 @@ chrome.storage.sync.get(['idServer', 'wsServer'], (result) => {
 })
 
 generate.addEventListener('click', async () => {
-  const res = await (await fetch(idServer + '/generate')).text()
+  const res = await (await fetch(idServer)).json()
   console.log(res);
   input.value = res
 }, false)
 
 matching.addEventListener('click', async () => {
   const id = input.value;
-  const check = await (await fetch(idServer + '/check' + '?id=' + id)).json();
+  const check = await (await fetch(idServer + '?id=' + id)).json();
   if (check && check.status === false) {
     console.error(check.error)
   }
@@ -31,7 +31,7 @@ matching.addEventListener('click', async () => {
     chrome.tabs.executeScript(
       tabs[0].id,
       {
-        file: 'addListener.js'
+        file: ['addListener.js']
       });
   });
 }, false)

@@ -1,0 +1,32 @@
+{
+  "name": "bilibili-video-sync",
+  "version": "0.1.0",
+  "description": "a chrome extension for bilibili video syncing between friends",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "webpack --config webpack.config.js --mode development --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aMoonkin/bilibili-video-sync.git"
+  },
+  "keywords": [
+    "chrome",
+    "extension"
+  ],
+  "author": "Mingfei Ding",
+  "license": "MPL-2.0",
+  "bugs": {
+    "url": "https://github.com/aMoonkin/bilibili-video-sync/issues"
+  },
+  "homepage": "https://github.com/aMoonkin/bilibili-video-sync#readme",
+  "dependencies": {
+    "@deepstream/client": "^5.0.5",
+    "@deepstream/server": "^5.0.5"
+  },
+  "devDependencies": {
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10"
+  }
+}
