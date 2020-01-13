@@ -17,5 +17,8 @@
       "matches": ["http://*.bilibili.com/*"],
       "js": ["addListener.js"]
     }
+  ],
+  "web_accessible_resources": [
+    "inject.js"
   ]
 }
