@@ -19,7 +19,7 @@ function getStorage() {
     })
 }
 
-if (document.getElementById('bilibili-video-sync') !== null) {
+if (document.getElementById('bilibili-video-sync') === null) {
     getStorage().then(() => {
         injectScript()
     })

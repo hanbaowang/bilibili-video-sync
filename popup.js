@@ -45,6 +45,7 @@ function clearListeners() {
   }, function () {
     console.log('id is ', null);
   });
+  generate.innerText = 'Generate it'
 }
 
 async function generateListeners() {
@@ -55,6 +56,7 @@ async function generateListeners() {
 
 async function matchingListeners() {
   id = input.value;
+  console.log('matching, id=', id);
 
   if (!checkId(id)) {
     return false
