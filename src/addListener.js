@@ -1,6 +1,7 @@
 function injectScript() {
     return new Promise((resolve, reject) => {
         var script = document.createElement('script');
+        script.id = 'bilibili-video-sync';
         script.src = chrome.extension.getURL('inject.js');
         document.head.appendChild(script);
         resolve()
@@ -18,6 +19,8 @@ function getStorage() {
     })
 }
 
-getStorage().then(() => {
-    injectScript()
-})
+if (document.getElementById('bilibili-video-sync') !== null) {
+    getStorage().then(() => {
+        injectScript()
+    })
+}
