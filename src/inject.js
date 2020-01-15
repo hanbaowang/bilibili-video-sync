@@ -52,6 +52,7 @@ class Listener {
             const currentProgress = this.player.getCurrentTime();
             if (Math.abs(currentProgress - remoteProgress) > 3) {
                 this.player.seek(remoteProgress);
+                this.state = this.player.getState();
             }
         })
     }

@@ -1,9 +1,9 @@
 chrome.runtime.onInstalled.addListener(function() {
   chrome.storage.sync.set({
-    wsServer: 'ws://localhost:6020',
-    idServer: 'http://localhost:6021'
+    wsServer: 'wss://YOUR.SERVER',
+    idServer: 'https://YOUR.SERVER'
   }, function() {
-    console.log('websocket server has set to localhost:6020');
+    console.log('server has set to YOUR SERVER');
   });
   chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
     chrome.declarativeContent.onPageChanged.addRules([{
