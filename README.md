@@ -44,6 +44,7 @@ click matching -> inject a script to current page -> connect to deepstream -> sh
     - [ ] generate could weather others can control or not
 - [ ] once joining following others' progress 
 - [ ] options page for configuring server
+- [ ] select server considering with latency
 
 ## player APIs
 
