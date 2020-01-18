@@ -24,9 +24,11 @@
   "homepage": "https://github.com/aMoonkin/bilibili-video-sync#readme",
   "dependencies": {
     "@deepstream/client": "^5.0.5",
-    "@deepstream/server": "^5.0.5"
+    "@deepstream/server": "^5.0.5",
+    "slideout": "^1.0.1"
   },
   "devDependencies": {
+    "html-loader": "^0.5.5",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10"
   }

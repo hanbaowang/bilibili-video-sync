@@ -15,7 +15,7 @@
   "content_scripts": [
     {
       "matches": ["http://*.bilibili.com/*"],
-      "js": ["addListener.js"]
+      "js": ["addListener.js", "removeListener.js"]
     }
   ],
   "web_accessible_resources": [
