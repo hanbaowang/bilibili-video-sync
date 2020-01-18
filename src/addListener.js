@@ -10,10 +10,11 @@ function injectScript() {
 
 function getStorage() {
     return new Promise((resolve, reject) => {
-        chrome.storage.sync.get(['idServer', 'wsServer', 'id'], (result) => {
+        chrome.storage.sync.get(['idServer', 'wsServer', 'id', 'state'], (result) => {
             localStorage['idServer'] = result['idServer'];
             localStorage['wsServer'] = result['wsServer'];
             localStorage['id'] = result['id'];
+            localStorage['state'] = result['state'];
             resolve()
         })
     })

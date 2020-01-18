@@ -4,6 +4,29 @@ const back = document.getElementById('back')
 const generate = document.getElementById('generate')
 const matching = document.getElementById('matching')
 
+// =========StateMachine===========
+let StateMachine = function() {
+  this.mapping = {};
+}
+
+StateMachine.prototype.init = function (mapping) {
+  this.mapping = mapping;
+}
+
+StateMachine.prototype.getTransition = function (from, to) {
+  let start = this.mapping[from];
+  if (typeof start === 'undefined') {
+    console.error("no such state")
+    return false;
+  }
+  let end = start[to];
+  if (typeof end !== 'function') {
+    console.error("no such state")
+    return false;
+  }
+  return end;
+}
+
 const msm = new StateMachine();
 const initState = createState();
 msm.init(
@@ -31,7 +54,7 @@ let idServer = '', wsServer = '';
 chrome.storage.sync.get(['idServer', 'wsServer', 'id', 'state'], (result) => {
   idServer = result['idServer'];
   wsServer = result['wsServer'];
-  let id = result['id'];
+  let id = result['id'] || '';
   let state = result['state'] || 'initialed';
   
   initState(state, id);
@@ -53,10 +76,7 @@ async function host() {
     id
   });
 
-  // TODO: if any bug, try to set timeout 0
-  generate.removeEventListener('click', host, false);
-
-  initState(state);
+  initState(state, id);
 }
 
 function reset() {
@@ -69,30 +89,22 @@ function reset() {
     id: null
   })
 
-  generate.removeEventListener('click', copy, false);
-  matching.removeEventListener('click', search, false);
-  back.removeEventListener('click', reset, false);
-
   initState(state)
 }
 
 function search() {
   const state = 'search';
 
-  inject();
-
   chrome.storage.sync.set({
     state
   })
 
-  matching.removeEventListener('click', search, false);
-
   initState(state);
 }
 
-function match() {
+async function match() {
   const id = input.value;
-  if (await checkId(id)) {
+  if (!await checkId(id)) {
     return
   }
 
@@ -103,7 +115,7 @@ function match() {
     id
   })
 
-  matching.removeEventListener('click', match, false);
+  inject();
 
   initState(state, id);
 }
@@ -111,12 +123,12 @@ function match() {
 function rematch() {
   const state = 'search';
 
+  eject()
+
   chrome.storage.sync.set({
     state,
     id: null
   })
-
-  matching.removeEventListener('click', rematch, false);
 
   initState(state);
 }
@@ -124,12 +136,14 @@ function rematch() {
 function createState() {
   const initialed = () => {
     content.style.display = 'none';
-    input.disable = true;
+    input.disabled = true;
     back.style.display = 'none';
     generate.style.display = 'block';
     generate.innerText = 'Create a room'
     matching.style.display = 'block';
     matching.innerText = 'Join a room';
+
+    removeAllEventListener()
 
     generate.addEventListener('click', msm.getTransition('initialed', 'hosted'), false);
     matching.addEventListener('click', msm.getTransition('initialed', 'search'), false);
@@ -137,11 +151,13 @@ function createState() {
   const hosted = (id) => {
     content.style.display = 'flex';
     input.value = id;
-    input.disable = true;
+    input.disabled = true;
     back.style.display = 'inline-block';
     generate.style.display = 'none';
     matching.style.display = 'block';
     matching.innerText = 'Copy';
+
+    removeAllEventListener()
 
     matching.addEventListener('click', copy, false);
     back.addEventListener('click', msm.getTransition('hosted', 'initialed'), false);
@@ -149,22 +165,26 @@ function createState() {
   const search = (id) => {
     content.style.display = 'flex';
     input.value = id;
-    input.disable = false;
+    input.disabled = false;
     back.style.display = 'inline-block';
     generate.style.display = 'none';
     matching.style.display = 'block';
     matching.innerText = 'Join';
 
+    removeAllEventListener()
+    
     matching.addEventListener('click', msm.getTransition('search', 'matched'), false);
     back.addEventListener('click', msm.getTransition('search', 'initialed'), false);
   }
   const matched = (id) => {
     content.style.display = 'flex';
     input.value = id;
-    input.disable = true;
+    input.disabled = true;
     back.style.display = 'inline-block';
     generate.style.display = 'none';
     matching.style.display = 'none';
+
+    removeAllEventListener()
 
     back.addEventListener('click', msm.getTransition('matched', 'search'), false);
   };
@@ -173,7 +193,7 @@ function createState() {
     initialed, hosted, search, matched
   }
 
-  const fn = (state, id) => {
+  const fn = (state, id = '') => {
     if (typeof mapping[state] !== 'undefined')
       mapping[state](id);
   }
@@ -225,25 +245,20 @@ async function generateId() {
   return res;
 }
 
-// =========StateMachine===========
-let StateMachine = {
-  mapping: {}
+function copy() {
+  input.select();
+  document.execCommand("copy");
 }
 
-StateMachine.prototype.init = function (mapping) {
-  this.mapping = mapping;
+function removeAllEventListener() {
+  // TODO performance
+  back.removeEventListener('click', reset, false);
+  back.removeEventListener('click', rematch, false);
+
+  generate.removeEventListener('click', host, false);
+
+  matching.removeEventListener('click', copy, false);
+  matching.removeEventListener('click', search, false);
+  matching.removeEventListener('click', match, false)
 }
 
-StateMachine.prototype.getTransition = function (from, to) {
-  let start = this.mapping[from];
-  if (typeof start === 'undefined') {
-    console.error("no such state")
-    return false;
-  }
-  let end = start[to];
-  if (typeof end !== 'function') {
-    console.error("no such state")
-    return false;
-  }
-  return end;
-}

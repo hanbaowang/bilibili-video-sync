@@ -1,7 +1,6 @@
-const script = document.getElementById('bilibili-video-sync');
+var script = script || document.getElementById('bilibili-video-sync');
 
-if (script === null) {
-    return 
+if (script !== null) {
+    script.remove();
 }
 
-script.remove();
