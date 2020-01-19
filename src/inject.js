@@ -58,6 +58,7 @@ class App {
                 return
             }
             this.record.set('state', state);
+            console.log('state has set to', state);
         }, time || 0);
     }
 

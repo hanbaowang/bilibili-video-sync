@@ -15,6 +15,13 @@ footer {
     background-color: #f0f0f0;
 }
 
+.back {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 14px;
+}
+
 div.content {
     margin: 15px auto;
     width: 87%;
