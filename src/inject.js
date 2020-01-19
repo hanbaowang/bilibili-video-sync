@@ -114,6 +114,8 @@ class App {
     }
 
     _setController() {
+        this._newcomerSubscriber();
+        
         document.querySelector('.bilibili-player-video-btn.bilibili-player-video-btn-start')
             .addEventListener('click', this._stateController.bind(this), false);
 
@@ -132,6 +134,7 @@ class App {
     _setSubscriber() {
         this._setStateSubscriber();
         this._setProgressSubscriber();
+        this._newcomerController();
     }
 }
 
