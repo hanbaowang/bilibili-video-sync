@@ -15,9 +15,10 @@ class App {
 
     start() {
         this._getStorage()._connect();
-        this._setSubscriber();
         if (this.state === 'hosted') {
             this._setController();
+        } else {
+            this._setSubscriber();
         }
     }
 
@@ -104,7 +105,9 @@ class App {
         document.querySelector('.bilibili-player-video-btn.bilibili-player-video-btn-start')
             .addEventListener('click', this._stateController.bind(this), false);
 
-        document.querySelector('.bilibili-player-video-progress-slider')
+        document.querySelector('.bilibili-player-video-progress')
+            .addEventListener('mouseup', this._progressController.bind(this), false);
+        document.getElementById('bilibili_pbp')
             .addEventListener('mouseup', this._progressController.bind(this), false);
 
         document.addEventListener('keydown', this._shortcutController.bind(this), false)
