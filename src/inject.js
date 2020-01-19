@@ -50,6 +50,13 @@ class App {
         })
     }
 
+    _newcomerSubscriber() {
+        this.record.subscribe('newcomer', () => {
+            this._progressController();
+            this._stateController();
+        })
+    }
+
     _stateController(time) {
         setTimeout(() => {
             const state = this.player.getState();
@@ -68,6 +75,10 @@ class App {
             console.log('progress has set to', progress)
             this.record.set('progress', progress);
         }, 0);
+    }
+
+    _newcomerController() {
+        this.record.set('newcomer', 1);
     }
 
     _shortcutController(e) {
@@ -108,8 +119,10 @@ class App {
 
         document.querySelector('.bilibili-player-video-progress')
             .addEventListener('mouseup', this._progressController.bind(this), false);
-        document.getElementById('bilibili_pbp')
-            .addEventListener('mouseup', this._progressController.bind(this), false);
+        const pbp = document.getElementById('bilibili_pbp')
+        if (pbp !== null) {
+            pbp.addEventListener('mouseup', this._progressController.bind(this), false);
+        }
 
         document.addEventListener('keydown', this._shortcutController.bind(this), false)
 
@@ -123,8 +136,17 @@ class App {
 }
 
 
-const app = new App();
-app.start();
+function init() {
+    if (typeof player.play !== 'undefined') {
+        const app = new App();
+        app.start();
+    } else {
+        setTimeout(() => {
+            init()
+        }, 500);
+    }
+}
 
+init();
 
 

@@ -22,6 +22,8 @@ function getStorage() {
 
 if (document.getElementById('bilibili-video-sync') === null) {
     getStorage().then(() => {
-        injectScript()
+        if (document.getElementById('bilibili-video-sync') === null) {
+            injectScript()
+        }
     })
 }
