@@ -42,9 +42,11 @@ click matching -> inject a script to current page -> connect to deepstream -> sh
 - [ ] matching page hide in the ride side of bilibili video page, it can be used across pages.
     - [ ] url share support(automatically start sync when visit the url & 1-click share url)
     - [ ] generate could weather others can control or not
+    - [ ] support shortcuts
 - [ ] once joining following others' progress 
 - [ ] options page for configuring server
 - [ ] select server considering with latency
+- [ ] ensure high sla
 
 ## player APIs
 
