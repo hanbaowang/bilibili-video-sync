@@ -196,7 +196,18 @@ class App {
         this._newcomerController();
     }
 
-    destroy() {
+    async destroyId() {
+        const res = await fetch(this.idServer + '/close', {
+            method: 'POST',
+            body: JSON.stringify({
+                id: this.id
+            })
+        })
+        let resj = await res.json();
+        if (resj.status !== true) {
+            console.error(resj.error)
+            return
+        }
         document.querySelector('.bilibili-player-video-btn.bilibili-player-video-btn-start')
             .removeEventListener('click', this._stateController.bind(this));
 
