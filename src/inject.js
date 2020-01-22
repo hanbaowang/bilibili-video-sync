@@ -195,6 +195,24 @@ class App {
         this._setProgressSubscriber();
         this._newcomerController();
     }
+
+    destroy() {
+        document.querySelector('.bilibili-player-video-btn.bilibili-player-video-btn-start')
+            .removeEventListener('click', this._stateController.bind(this));
+
+        document.querySelector('.bilibili-player-video-progress')
+            .removeEventListener('mouseup', this._progressController.bind(this));
+        const pbp = document.getElementById('bilibili_pbp')
+        if (pbp !== null) {
+            pbp.removeEventListener('mouseup', this._progressController.bind(this));
+        }
+
+        document.removeEventListener('keydown', this._shortcutController.bind(this))
+
+        document.removeEventListener('click', this._updatePlayerFoucsOn.bind(this));
+
+        this.record.discard();
+    }
 }
 
 
