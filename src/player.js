@@ -2,6 +2,7 @@ export class Player {
     constructor() {
         this.biliPlayer = player;
         this.updateState();
+        this.queue = [];
     }
 
     updateState() {
@@ -9,6 +10,11 @@ export class Player {
     }
 
     setState(state) {
+        if (this.queue.length > 0) {
+            setTimeout(() => {
+                this.setState(state);
+            }, 1000);
+        }
         if (state === 'PLAYING') {
             this.biliPlayer.play();
         } else {
@@ -24,9 +30,15 @@ export class Player {
     }
 
     seek(progress) {
+        this.queue.push(progress);
         this.biliPlayer.seek(progress);
+        const loadingInterval = setInterval(() => {
+            if (this.getState() === "PLAYING") {
+                clearInterval(loadingInterval);
+                this.queue.shift();
+            }
+        }, 1000);
         console.log("player progress has set to ", progress);
-        this.updateState();
     }
 
     getCurrentTime() {

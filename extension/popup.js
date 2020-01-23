@@ -5,7 +5,7 @@ const generate = document.getElementById('generate')
 const matching = document.getElementById('matching')
 
 // =========StateMachine===========
-let StateMachine = function() {
+let StateMachine = function () {
   this.mapping = {};
 }
 
@@ -56,7 +56,7 @@ chrome.storage.sync.get(['idServer', 'wsServer', 'id', 'state'], (result) => {
   wsServer = result['wsServer'];
   let id = result['id'] || '';
   let state = result['state'] || 'initialed';
-  
+
   initState(state, id);
 })
 
@@ -139,9 +139,9 @@ function createState() {
     input.disabled = true;
     back.style.display = 'none';
     generate.style.display = 'block';
-    generate.innerText = 'Create a room'
+    generate.innerText = '创建房间->'
     matching.style.display = 'block';
-    matching.innerText = 'Join a room';
+    matching.innerText = '加入房间->';
 
     removeAllEventListener()
 
@@ -151,7 +151,7 @@ function createState() {
   const hosted = (id) => {
     content.style.display = 'flex';
     input.value = id;
-    input.disabled = true;
+    input.disabled = false;
     back.style.display = 'inline-block';
     generate.style.display = 'none';
     matching.style.display = 'block';
@@ -166,13 +166,14 @@ function createState() {
     content.style.display = 'flex';
     input.value = id;
     input.disabled = false;
+    input.focus();
     back.style.display = 'inline-block';
     generate.style.display = 'none';
     matching.style.display = 'block';
     matching.innerText = 'Join';
 
     removeAllEventListener()
-    
+
     matching.addEventListener('click', msm.getTransition('search', 'matched'), false);
     back.addEventListener('click', msm.getTransition('search', 'initialed'), false);
   }
@@ -202,12 +203,24 @@ function createState() {
 }
 
 async function checkId(id) {
-  const checkRes = await fetch(idServer + '/check' + '?id=' + id);
-  const check = await checkRes.json();
-  if (check && check.status === false) {
-    console.error(check.error);
+  try {
+    const checkRes = await fetch(idServer + '/check' + '?id=' + id);
+    const check = await checkRes.json();
+    if (check && check.status === false) {
+      new Notification('2233', {
+        body: '加入房间失败，没有找到对应的id呢>_<'
+      })
+      console.error(check.error);
+      input.focus();
+    }
+    return check.status;
+  } catch (e) {
+    console.log(e);
+    new Notification('2233', {
+      body: '加入房间失败，看起来是服务器故障了呢>_<'
+    })
   }
-  return check.status;
+
 }
 
 // function setExpireTime() {
@@ -240,9 +253,16 @@ function eject() {
 }
 
 async function generateId() {
-  const res = await (await fetch(idServer + '/generate')).text()
-  console.log(res);
-  return res;
+  try {
+    const res = await fetch(idServer + '/generate');
+    const rest = await res.text()
+    return rest;
+  } catch (e) {
+    console.log(e)
+    new Notification('2233', {
+      body: '创建房间失败，看起来是服务器故障了呢>_<'
+    })
+  }
 }
 
 function copy() {

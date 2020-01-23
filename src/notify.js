@@ -26,7 +26,7 @@ function notify(title, options) {
 
 
 export function bvsNotify(message) {
-    notify('Bilibili video sync', {
+    notify('Bilibili同步助手', {
         body: message
     })
 }

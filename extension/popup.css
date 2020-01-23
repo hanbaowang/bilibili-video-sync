@@ -18,12 +18,19 @@ footer {
 .back {
     position: absolute;
     top: 10px;
-    left: 10px;
     font-size: 14px;
 }
 
+.back .icon {
+    width: 20px;
+}
+
+.back .icon:hover path {
+    fill: #3079ed;
+}
+
 div.content {
-    margin: 15px auto;
+    margin: 20px auto 5px auto;
     width: 87%;
     display: none;
 }
@@ -34,7 +41,9 @@ div.content {
 
 .id-input {
     width: 97%;
-    padding: 5px 0;
+    padding: 5px;
+    font-size: 14px;
+    border: none;
 }
 
 .generate {
@@ -44,10 +53,11 @@ div.content {
 
 .btn {
     display: block;
+    font-size: 12px;
     margin: 0 auto;
     width: 87%;
     padding: 5px;
-    margin-top: 5px;
+    margin: 5px auto;
 }
 
 .matching, .generate {
@@ -55,4 +65,13 @@ div.content {
     color: #fff;
     background-color: #4d90fe;
     background-image: -webkit-linear-gradient(top,#4d90fe,#4787ed);
+}
+
+.help {
+    display: inline-block;
+    width: 90%;;
+    color: #3079ed;
+    font-size: 12px;
+    text-align: right;
+    text-decoration: none;
 }

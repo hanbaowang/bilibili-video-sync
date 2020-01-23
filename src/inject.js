@@ -37,7 +37,7 @@ class App {
     _heartbeatSubscriber() {
         let interval = setInterval(() => {
             if (Date.now() - this.lastHeartbeat > 30 * 1000) {
-                bvsNotify('Lost connection with the host');
+                bvsNotify("已失去与主机的连接");
                 clearInterval(interval);
             }
         }, 5 * 1000)
@@ -80,7 +80,7 @@ class App {
             this._progressController();
             this._stateController();
             this._welcomeNewcomer();
-            bvsNotify('Newcomer joined');
+            bvsNotify('有新人加入进来了呢');
         })
     }
 
@@ -91,7 +91,9 @@ class App {
     _heartbeatController() {
         setInterval(() => {
             this.record.set('heartbeat', Date.now(), err => {
-                console.log('heartbeat err', err);
+                if (err) {
+                    console.log('heartbeat err', err);
+                }
             })
         }, 5 * 1000)
     }
@@ -122,15 +124,15 @@ class App {
         this.record.set('newcomer', 1);
         this.reconnectInterval = setInterval(() => {
             if (this.connected === true) {
-                bvsNotify("host founded, enjoy your journey");
+                bvsNotify("已连接主机，用番愉快~");
                 clearInterval(this.reconnectInterval);
                 return 
             }
             if (this.connected === false && this.reconnection < 3) {
                 this.reconnection++;
-                bvsNotify(`we have tried ${this.reconnection} times but no host founded`)
+                bvsNotify(`已经尝试了 ${this.reconnection} 次连接，但是没连接上呢>_<`)
             } else {
-                bvsNotify(`no host founded, please contact to the host`);
+                bvsNotify(`没有发现主机哎`);
                 clearInterval(this.reconnectInterval);
             }
         }, 5 * 1000)
@@ -165,7 +167,7 @@ class App {
         client.login();
         this.record = client.record.getRecord(this.id);
         console.log('connected');
-        bvsNotify('connected');
+        bvsNotify('已连接至服务器');
         return this;
     }
 
@@ -187,6 +189,8 @@ class App {
         document.addEventListener('keydown', this._shortcutController.bind(this), false)
 
         document.addEventListener('click', this._updatePlayerFoucsOn.bind(this), false);
+
+        window.addEventListener("destroyListener", this.destroyListener.bind(this), false);
     }
 
     _setSubscribers() {
@@ -196,18 +200,8 @@ class App {
         this._newcomerController();
     }
 
-    async destroyId() {
-        const res = await fetch(this.idServer + '/close', {
-            method: 'POST',
-            body: JSON.stringify({
-                id: this.id
-            })
-        })
-        let resj = await res.json();
-        if (resj.status !== true) {
-            console.error(resj.error)
-            return
-        }
+    destroyListener() {
+
         document.querySelector('.bilibili-player-video-btn.bilibili-player-video-btn-start')
             .removeEventListener('click', this._stateController.bind(this));
 
