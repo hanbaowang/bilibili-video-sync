@@ -18,9 +18,21 @@ function getStorage() {
 }
 
 if (document.getElementById('bilibili-video-sync') === null) {
+    console.log('first check')
     getStorage().then(() => {
         if (document.getElementById('bilibili-video-sync') === null) {
+            console.log('second check')
             injectScript()
         }
     })
+} else {
+    console.log('custom event')
+    const url = location.href;
+    var event = new CustomEvent("readdListener", {
+        detail: {
+            readd: true,
+            url
+        }
+    });
+    window.dispatchEvent(event);
 }

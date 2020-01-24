@@ -3,7 +3,7 @@ import { DeepstreamClient } from '@deepstream/client'
 import { Player } from "./player";
 import { bvsNotify } from "./notify";
 class App {
-    constructor() {
+    constructor(url) {
         this.playerFocusOn = false;
         this.state = '';
         this.idServer = '';
@@ -15,6 +15,7 @@ class App {
         this.connected = false;
         this.reconnection = 0;
         this.reconnectInterval = null;
+        this.url = url;
     }
 
     start() {
@@ -126,7 +127,7 @@ class App {
             if (this.connected === true) {
                 bvsNotify("已连接主机，用番愉快~");
                 clearInterval(this.reconnectInterval);
-                return 
+                return
             }
             if (this.connected === false && this.reconnection < 3) {
                 this.reconnection++;
@@ -175,8 +176,10 @@ class App {
         this._newcomerSubscriber();
 
         this._heartbeatController();
-        
+
         document.querySelector('.bilibili-player-video-btn.bilibili-player-video-btn-start')
+            .addEventListener('click', this._stateController.bind(this), false);
+        document.querySelector('.bilibili-player-video-toast-item-jump')
             .addEventListener('click', this._stateController.bind(this), false);
 
         document.querySelector('.bilibili-player-video-progress')
@@ -185,12 +188,15 @@ class App {
         if (pbp !== null) {
             pbp.addEventListener('mouseup', this._progressController.bind(this), false);
         }
+        document.querySelector('.bilibili-player-video-toast-item-jump')
+            .addEventListener('click', this._progressController.bind(this), false);
 
         document.addEventListener('keydown', this._shortcutController.bind(this), false)
 
         document.addEventListener('click', this._updatePlayerFoucsOn.bind(this), false);
 
         window.addEventListener("destroyListener", this.destroyListener.bind(this), false);
+
     }
 
     _setSubscribers() {
@@ -221,17 +227,31 @@ class App {
 }
 
 
-function init() {
-    if (typeof player.play !== 'undefined') {
-        const app = new App();
+function init(url) {
+    if (typeof player !== 'undefined' && typeof player.play !== 'undefined' && !app) {
+        app = new App(url);
         app.start();
     } else {
         setTimeout(() => {
-            init()
+            init(url)
         }, 500);
     }
 }
 
-init();
+let app;
+let url = location.href;
+init(url);
 
 
+window.addEventListener('readdListener', (e) => {
+    console.log(app)
+    console.log(e.detail)
+    const url = e.detail.url;
+    if (typeof app === 'undefined') {
+        init(url);
+    } else if (app.url !== url) {
+        app.destroyListener();
+        app = null;
+        init(url)
+    }
+}, false)

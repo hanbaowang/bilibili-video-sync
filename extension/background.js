@@ -22,7 +22,6 @@ chrome.tabs.onUpdated.addListener((tab) => {
     const state = result['state'];
     const id = result['id'];
     console.error('test start', id, state)
-
     if (id !== null && (state === 'hosted' || state === 'matched')) {
       ejectOthers(tab);
       console.error(tab)
@@ -49,6 +48,7 @@ function inject(tab) {
 function ejectOthers(currentTab) {
   chrome.tabs.query({ url: 'https://*.bilibili.com/video/*' }, function (tabs) {
     tabs.forEach(tab => {
+      console.error(JSON.stringify(tab), currentTab)
       if (currentTab === tab.id) {
         return
       }
