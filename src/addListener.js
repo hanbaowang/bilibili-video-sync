@@ -1,11 +1,8 @@
 function injectScript() {
-    return new Promise((resolve, reject) => {
-        var script = document.createElement('script');
-        script.id = 'bilibili-video-sync';
-        script.src = chrome.extension.getURL('inject.js');
-        document.head.appendChild(script);
-        resolve()
-    })
+    var script = document.createElement('script');
+    script.id = 'bilibili-video-sync';
+    script.src = chrome.extension.getURL('inject.js');
+    document.head.appendChild(script);
 }
 
 function getStorage() {
@@ -21,7 +18,21 @@ function getStorage() {
 }
 
 if (document.getElementById('bilibili-video-sync') === null) {
+    console.log('first check')
     getStorage().then(() => {
-        injectScript()
+        if (document.getElementById('bilibili-video-sync') === null) {
+            console.log('second check')
+            injectScript()
+        }
     })
+} else {
+    console.log('custom event')
+    const url = location.href;
+    var event = new CustomEvent("readdListener", {
+        detail: {
+            readd: true,
+            url
+        }
+    });
+    window.dispatchEvent(event);
 }

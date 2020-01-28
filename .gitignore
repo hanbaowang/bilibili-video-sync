@@ -106,3 +106,5 @@ dist
 *.crx
 *.pem
 .DS_Store
+
+*.zip

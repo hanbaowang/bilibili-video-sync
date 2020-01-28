@@ -3,19 +3,35 @@
   "version": "0.1.0",
   "description": "A chrome extension for bilibili video syncing between friends",
   "manifest_version": 2,
-  "permissions": ["storage", "declarativeContent", "activeTab"],
+  "permissions": [
+    "storage",
+    "declarativeContent",
+    "activeTab",
+    "tabs",
+    "notifications",
+    "https://*.bilibili.com/*"
+  ],
   "background": {
-    "scripts": ["background.js"],
+    "scripts": [
+      "background.js"
+    ],
     "persistent": false
   },
-  "options_page": "options.html",
+  "icons": {
+    "32": "./favicon.png"
+  },
   "page_action": {
     "default_popup": "popup.html"
   },
   "content_scripts": [
     {
-      "matches": ["http://*.bilibili.com/*"],
-      "js": ["addListener.js", "removeListener.js"]
+      "matches": [
+        "http://*.bilibili.com/*"
+      ],
+      "js": [
+        "addListener.js",
+        "removeListener.js"
+      ]
     }
   ],
   "web_accessible_resources": [
