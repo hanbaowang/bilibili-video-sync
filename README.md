@@ -1,6 +1,7 @@
 # bilibili-video-sync
 A chrome extension for bilibili video syncing between friends 哔哩哔哩 (゜-゜)つロ 干杯~
 
+https://chrome.google.com/webstore/detail/bilibili-video-sync/ljikkbfpbflpcmjfehjgchdjphkflemi
 
 ## for users
 
@@ -38,14 +39,14 @@ click matching -> inject a script to current page -> connect to deepstream -> sh
 
 ### future design
 
-- [ ] popup page for indicating the state: 
-    - [ ] connected
-    - [ ] disconnected
-    - [ ] error
+- [x] notifications for indicating the state: 
+    - [x] connected
+    - [x] disconnected
+    - [x] error
 - [ ] matching page hide in the ride side of bilibili video page, it can be used across pages.
     - [ ] url share support(automatically start sync when visit the url & 1-click share url)
     - [ ] generate could weather others can control or not
-    - [ ] support shortcuts
+    - [x] support shortcuts
 - [ ] once joining following others' progress 
 - [ ] options page for configuring server
 - [ ] select server considering with latency
