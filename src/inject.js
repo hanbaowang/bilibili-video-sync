@@ -179,8 +179,8 @@ class App {
 
         document.querySelector('.bilibili-player-video-btn.bilibili-player-video-btn-start')
             .addEventListener('click', this._stateController.bind(this), false);
-        document.querySelector('.bilibili-player-video-toast-item-jump')
-            .addEventListener('click', this._stateController.bind(this), false);
+        const item = document.querySelector('.bilibili-player-video-toast-item-jump')
+            item.addEventListener('click', this._stateController.bind(this), false);
 
         document.querySelector('.bilibili-player-video-progress')
             .addEventListener('mouseup', this._progressController.bind(this), false);
